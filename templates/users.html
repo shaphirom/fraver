@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Fraver</title>
+</head>
+<body>
+
+    <div>
+        {% with messages = get_flashed_messages() %}
+    
+        {% if messages %}
+            {% for message in messages %}
+                <div class="bg-yellow-100 p-3 mx-auto flex align-center justify-center">
+                    <h3 class=" text-3ms font-bold uppercase">{{message}}</h3>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+    {% endwith %}
+    </div>
+
+    {% if session['user']:%}
+    <a href="{{url_for('users.logout')}}">Salir</a>
+    {% endif %}
+
+    <div>Formulario en creacion
+
+        <form action="{{url_for('users.add')}}" method="POST">
+            {{form.csrf_token}}
+            <p>
+            {{form.name.label}}
+            {{form.name}}
+            </p>
+            <p>
+            {{form.email.label}}
+            {{form.email}}
+            </p>
+            <button>Enviar</button>
+        </form>
+    </div>
+
+    <div>
+        Lista de users
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>UDPATE</th>
+                <th>DELETE</th>
+            </tr>
+            {%for user in users%}
+            <tr>
+                <td>
+                    {{user.id}}
+                </td>
+                <td>
+                    {{user.name}}
+                </td>
+                <td>
+                    {{user.email}}
+                </td>
+                <td>
+                    <a href="{{url_for('users.updateData',id = user.id)}}">Update</a>
+                </td>
+                <td>
+                    <a href="{{url_for('users.deleteData',id = user.id)}}">Delete</a>
+                </td>
+            </tr>
+            {%endfor%}
+        </table>    
+    </div>
+    
+</body>
+</html>
